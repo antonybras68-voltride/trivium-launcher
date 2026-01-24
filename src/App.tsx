@@ -82,23 +82,20 @@ const APPS = [
   }
 ]
 
-// Types
 interface User {
   id: string
   email: string
   name: string
   role: string
-  apps: string[] // Liste des IDs d'apps autorisées
+  apps: string[]
 }
 
-// Composant Login
 function Login({ onLogin }: { onLogin: (user: User) => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // Utilisateurs de test (à remplacer par une vraie API)
   const testUsers: Record<string, { password: string; user: User }> = {
     'admin@trivium.com': {
       password: 'admin123',
@@ -208,13 +205,11 @@ function Login({ onLogin }: { onLogin: (user: User) => void }) {
   )
 }
 
-// Composant Dashboard
 function Dashboard({ user, onLogout }: { user: User; onLogout: () => void }) {
   const userApps = APPS.filter(app => user.apps.includes(app.id))
 
   return (
     <div className="min-h-screen p-4 md:p-8">
-      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">🚀 Trivium Launcher</h1>
@@ -228,7 +223,6 @@ function Dashboard({ user, onLogout }: { user: User; onLogout: () => void }) {
         </button>
       </div>
 
-      {/* Apps Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {userApps.map(app => (
           
@@ -268,7 +262,6 @@ function Dashboard({ user, onLogout }: { user: User; onLogout: () => void }) {
         ))}
       </div>
 
-      {/* Footer */}
       <div className="mt-12 text-center text-gray-500 text-sm">
         <p>Trivium Group © 2026 - Voltride | Motor Rent | Trivium Family</p>
       </div>
@@ -276,7 +269,6 @@ function Dashboard({ user, onLogout }: { user: User; onLogout: () => void }) {
   )
 }
 
-// App principale
 export default function App() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
