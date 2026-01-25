@@ -5,7 +5,7 @@ const APPS = [
   { id: 'motorrent-opp', name: 'MOTOR RENT OPP', description: 'Gestion des locations de scooters et motos', url: 'https://motor-rent-operator-production.up.railway.app', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769277533/Design_sans_titre_ca0tl1.png', color: '#ffaf10', brand: 'motorrent' },
   { id: 'backoffice-voltride', name: 'BACK OFFICE VOLTRIDE', description: 'Administration Voltride', url: '#', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769278425/IMG-20260111-WA0001_1_-removebg-preview_zzajxa.png', color: '#abdee6', brand: 'voltride', comingSoon: true },
   { id: 'backoffice-motorrent', name: 'BACK OFFICE MOTOR RENT', description: 'Administration Motor Rent', url: '#', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769277533/Design_sans_titre_ca0tl1.png', color: '#ffaf10', brand: 'motorrent', comingSoon: true },
-  { id: 'trivium-buggy', name: 'TRIVIUM BUGGY', description: 'Gestion des tours en buggy', url: '#', icon: '🏎️', color: '#10b981', brand: 'trivium', comingSoon: true },
+  { id: 'trivium-buggy', name: 'TRIVIUM BUGGY', description: 'Gestion des tours en buggy', url: 'https://trivium-buggy-production.up.railway.app', icon: '🏎️', color: '#10b981', brand: 'trivium' },
   { id: 'comptabilite', name: 'COMPTABILITÉ', description: 'Gestion financière', url: '#', icon: '📊', color: '#8b5cf6', brand: 'all', comingSoon: true },
   { id: 'mecanique', name: 'MÉCANIQUE', description: 'Gestion des réparations', url: '#', icon: '🔧', color: '#ef4444', brand: 'all', comingSoon: true },
   { id: 'stock', name: 'STOCK', description: 'Gestion des inventaires', url: '#', icon: '📦', color: '#f59e0b', brand: 'all', comingSoon: true }
