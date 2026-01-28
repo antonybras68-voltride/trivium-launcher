@@ -299,3 +299,4 @@ export default function App() {
   if (!user || !token) return <Login onLogin={(u, t) => { setUser(u); setToken(t) }} />
   return <Dashboard user={user} token={token} onLogout={handleLogout} />
 }
+// Force rebuild Wed Jan 28 22:57:44 UTC 2026
