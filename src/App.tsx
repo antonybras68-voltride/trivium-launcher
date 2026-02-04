@@ -2,16 +2,57 @@ import { useState, useEffect } from 'react'
 
 const API_URL = 'https://api-voltrideandmotorrent-production.up.railway.app'
 
-const APPS = [
-  { id: 'voltride-opp', name: 'VOLTRIDE OPP', description: 'Gestion des locations de vélos électriques', url: 'https://operator-production-188c.up.railway.app', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769278425/IMG-20260111-WA0001_1_-removebg-preview_zzajxa.png', color: '#abdee6', brand: 'voltride' },
-  { id: 'motorrent-opp', name: 'MOTOR RENT OPP', description: 'Gestion des locations de scooters et motos', url: 'https://motor-rent-operator-production.up.railway.app', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769277533/Design_sans_titre_ca0tl1.png', color: '#ffaf10', brand: 'motorrent' },
-  { id: 'backoffice-voltride', name: 'BACK OFFICE VOLTRIDE', description: 'Administration Voltride', url: 'https://backoffice-voltride-production.up.railway.app', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769278425/IMG-20260111-WA0001_1_-removebg-preview_zzajxa.png', color: '#abdee6', brand: 'voltride' },
-  { id: 'backoffice-motorrent', name: 'BACK OFFICE MOTOR RENT', description: 'Administration Motor Rent', url: 'https://backoffice-vandm-production.up.railway.app', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769277533/Design_sans_titre_ca0tl1.png', color: '#ffaf10', brand: 'motorrent' },
-  { id: 'trivium-buggy', name: 'TRIVIUM BUGGY', description: 'Gestion des tours en buggy', url: 'https://trivium-buggy-production.up.railway.app', icon: '🏎️', color: '#10b981', brand: 'trivium' },
-  { id: 'comptabilite-voltride', name: 'COMPTABILITÉ VOLTRIDE', description: 'Facturation, dépenses et IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1766928342/d5uv1qrfwr86rd1abtd1.png', color: '#f59e0b', brand: 'voltride' },
-  { id: 'mecanique', name: 'MÉCANIQUE', description: 'Gestion des réparations', url: '#', icon: '🔧', color: '#ef4444', brand: 'all', comingSoon: true },
-  { id: 'stock', name: 'STOCK', description: 'Gestion des inventaires', url: '#', icon: '📦', color: '#f59e0b', brand: 'all', comingSoon: true }
+type AppItem = {
+  id: string; name: string; description: string; url: string
+  icon: string; comingSoon?: boolean
+}
+
+type BrandGroup = {
+  id: string; name: string; tagline: string; logo: string
+  color: string; gradient: string; apps: AppItem[]
+}
+
+const BRANDS: BrandGroup[] = [
+  {
+    id: 'voltride', name: 'VOLTRIDE', tagline: 'Location de vélos électriques',
+    logo: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769278425/IMG-20260111-WA0001_1_-removebg-preview_zzajxa.png',
+    color: '#abdee6', gradient: 'from-cyan-600 to-blue-700',
+    apps: [
+      { id: 'voltride-opp', name: 'Operator', description: 'Gestion des locations', url: 'https://operator-production-188c.up.railway.app', icon: '📱' },
+      { id: 'backoffice-voltride', name: 'Back Office', description: 'Administration', url: 'https://backoffice-voltride-production.up.railway.app', icon: '🖥️' },
+      { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturation & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
+      { id: 'mecanique-voltride', name: 'Mécanique', description: 'Gestion des réparations', url: '#', icon: '🔧', comingSoon: true },
+      { id: 'stock-voltride', name: 'Stock', description: 'Gestion des inventaires', url: '#', icon: '📦', comingSoon: true }
+    ]
+  },
+  {
+    id: 'motorrent', name: 'MOTOR RENT', tagline: 'Location de scooters et motos',
+    logo: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769277533/Design_sans_titre_ca0tl1.png',
+    color: '#ffaf10', gradient: 'from-amber-500 to-orange-600',
+    apps: [
+      { id: 'motorrent-opp', name: 'Operator', description: 'Gestion des locations', url: 'https://motor-rent-operator-production.up.railway.app', icon: '📱' },
+      { id: 'backoffice-motorrent', name: 'Back Office', description: 'Administration', url: 'https://backoffice-vandm-production.up.railway.app', icon: '🖥️' },
+      { id: 'comptabilite-motorrent', name: 'Comptabilité', description: 'Facturation & IVA', url: '#', icon: '💰', comingSoon: true },
+      { id: 'mecanique-motorrent', name: 'Mécanique', description: 'Gestion des réparations', url: '#', icon: '🔧', comingSoon: true },
+      { id: 'stock-motorrent', name: 'Stock', description: 'Gestion des inventaires', url: '#', icon: '📦', comingSoon: true }
+    ]
+  },
+  {
+    id: 'trivium', name: 'TRIVIUM', tagline: 'Tours en buggy & mobilité',
+    logo: '',
+    color: '#10b981', gradient: 'from-emerald-500 to-teal-600',
+    apps: [
+      { id: 'trivium-buggy', name: 'Buggy', description: 'Gestion des tours en buggy', url: 'https://trivium-buggy-production.up.railway.app', icon: '🏎️' },
+      { id: 'trivium-mobility', name: 'Mobility', description: 'Gestion de mobilité', url: '#', icon: '🦽', comingSoon: true },
+      { id: 'comptabilite-trivium', name: 'Comptabilité', description: 'Facturation & IVA', url: '#', icon: '💰', comingSoon: true },
+      { id: 'mecanique-trivium', name: 'Mécanique', description: 'Gestion des réparations', url: '#', icon: '🔧', comingSoon: true },
+      { id: 'stock-trivium', name: 'Stock', description: 'Gestion des inventaires', url: '#', icon: '📦', comingSoon: true }
+    ]
+  }
 ]
+
+// Flat list of all apps for admin panel
+const ALL_APPS = BRANDS.flatMap(b => b.apps)
 
 const ROLES = [
   { value: 'ADMIN', label: 'Admin' },
@@ -23,16 +64,9 @@ const ROLES = [
 ]
 
 interface User {
-  id: string
-  email: string
-  firstName: string
-  lastName: string
-  role: string
-  brands: string[]
-  agencyIds: string[]
-  allowedApps: string[]
-  language: string
-  isActive?: boolean
+  id: string; email: string; firstName: string; lastName: string
+  role: string; brands: string[]; agencyIds: string[]
+  allowedApps: string[]; language: string; isActive?: boolean
 }
 
 function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
@@ -52,17 +86,11 @@ function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
         body: JSON.stringify({ email, password })
       })
       const data = await response.json()
-      if (!response.ok) {
-        setError(data.error || 'Erreur de connexion')
-        setLoading(false)
-        return
-      }
+      if (!response.ok) { setError(data.error || 'Erreur de connexion'); setLoading(false); return }
       localStorage.setItem('trivium_token', data.token)
       localStorage.setItem('trivium_user', JSON.stringify(data.user))
       onLogin(data.user, data.token)
-    } catch (err) {
-      setError('Erreur de connexion au serveur')
-    }
+    } catch (err) { setError('Erreur de connexion au serveur') }
     setLoading(false)
   }
 
@@ -114,8 +142,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
-    setSuccess('')
+    setError(''); setSuccess('')
     try {
       const response = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
@@ -124,17 +151,14 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       })
       if (!response.ok) { const data = await response.json(); setError(data.error || 'Erreur lors de la création'); return }
       setSuccess('Utilisateur créé avec succès !')
-      setShowCreateForm(false)
-      resetForm()
-      fetchUsers()
+      setShowCreateForm(false); resetForm(); fetchUsers()
     } catch (err) { setError('Erreur de connexion au serveur') }
   }
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingUser) return
-    setError('')
-    setSuccess('')
+    setError(''); setSuccess('')
     try {
       const updateData = { ...formData }
       if (!updateData.password) delete (updateData as any).password
@@ -145,9 +169,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       })
       if (!response.ok) { const data = await response.json(); setError(data.error || 'Erreur lors de la mise à jour'); return }
       setSuccess('Utilisateur modifié avec succès !')
-      setEditingUser(null)
-      resetForm()
-      fetchUsers()
+      setEditingUser(null); resetForm(); fetchUsers()
     } catch (err) { setError('Erreur de connexion au serveur') }
   }
 
@@ -162,13 +184,11 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
   }
 
   const resetForm = () => { setFormData({ email: '', password: '', firstName: '', lastName: '', role: 'OPERATOR', brands: ['VOLTRIDE', 'MOTOR-RENT'], allowedApps: [], language: 'es', isActive: true }) }
-
   const startEdit = (user: User) => {
     setEditingUser(user)
     setFormData({ email: user.email, password: '', firstName: user.firstName, lastName: user.lastName, role: user.role, brands: user.brands || [], allowedApps: user.allowedApps || [], language: user.language || 'es', isActive: user.isActive ?? true })
     setShowCreateForm(false)
   }
-
   const toggleApp = (appId: string) => { setFormData(prev => ({ ...prev, allowedApps: prev.allowedApps.includes(appId) ? prev.allowedApps.filter(id => id !== appId) : [...prev.allowedApps, appId] })) }
 
   return (
@@ -181,7 +201,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
           {error && <div className="mb-4 bg-red-500/20 border border-red-500/50 rounded-lg p-3 text-red-200">{error}</div>}
           {success && <div className="mb-4 bg-green-500/20 border border-green-500/50 rounded-lg p-3 text-green-200">{success}</div>}
-          
+
           {(showCreateForm || editingUser) && (
             <form onSubmit={editingUser ? handleUpdate : handleCreate} className="mb-8 bg-white/5 rounded-xl p-6 border border-white/10">
               <h3 className="text-lg font-semibold text-white mb-4">{editingUser ? `Modifier: ${editingUser.firstName} ${editingUser.lastName}` : 'Nouvel Utilisateur'}</h3>
@@ -195,12 +215,19 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
               </div>
               <div className="mb-4">
                 <label className="block text-sm text-gray-400 mb-2">Applications autorisées</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {APPS.map(app => (
-                    <label key={app.id} className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all ${formData.allowedApps.includes(app.id) ? 'bg-blue-500/20 border border-blue-500/50' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}>
-                      <input type="checkbox" checked={formData.allowedApps.includes(app.id)} onChange={() => toggleApp(app.id)} className="rounded" />
-                      <span className="text-sm text-white">{app.name}</span>
-                    </label>
+                <div className="space-y-3">
+                  {BRANDS.map(brand => (
+                    <div key={brand.id}>
+                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">{brand.name}</div>
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                        {brand.apps.map(app => (
+                          <label key={app.id} className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all ${formData.allowedApps.includes(app.id) ? 'bg-blue-500/20 border border-blue-500/50' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}>
+                            <input type="checkbox" checked={formData.allowedApps.includes(app.id)} onChange={() => toggleApp(app.id)} className="rounded" />
+                            <span className="text-sm text-white">{app.name}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -211,9 +238,9 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
               </div>
             </form>
           )}
-          
+
           {!showCreateForm && !editingUser && <button onClick={() => { setShowCreateForm(true); resetForm() }} className="mb-6 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all">➕ Nouvel Utilisateur</button>}
-          
+
           {loading ? <div className="text-center text-gray-400 py-8">Chargement...</div> : (
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -242,9 +269,99 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
   )
 }
 
+function BrandCard({ brand, userApps, isOpen, onToggle }: { brand: BrandGroup; userApps: string[]; isOpen: boolean; onToggle: () => void }) {
+  const availableApps = brand.apps.filter(app => userApps.includes(app.id) || app.comingSoon)
+  const activeCount = brand.apps.filter(app => userApps.includes(app.id) && !app.comingSoon).length
+
+  if (availableApps.length === 0) return null
+
+  return (
+    <div className="w-full">
+      <button
+        onClick={onToggle}
+        className={`w-full text-left rounded-2xl p-6 border transition-all duration-300 ${
+          isOpen
+            ? 'bg-white/15 border-white/30 shadow-lg shadow-black/20'
+            : 'bg-white/8 border-white/15 hover:bg-white/12 hover:border-white/25 hover:shadow-lg hover:shadow-black/10'
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${brand.gradient} flex items-center justify-center shadow-lg`}>
+              {brand.logo ? (
+                <img src={brand.logo} alt={brand.name} className="w-10 h-10 object-contain" />
+              ) : (
+                <span className="text-3xl">🏎️</span>
+              )}
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-white tracking-wide">{brand.name}</h2>
+              <p className="text-sm text-gray-400">{brand.tagline}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-medium px-3 py-1 rounded-full bg-white/10 text-gray-300">
+              {activeCount} app{activeCount > 1 ? 's' : ''}
+            </span>
+            <span className={`text-gray-400 transition-transform duration-300 text-xl ${isOpen ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </div>
+        </div>
+      </button>
+
+      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500px] opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 pl-4">
+          {availableApps.map(app => {
+            const isAvailable = userApps.includes(app.id) && !app.comingSoon
+            return (
+              <a
+                key={app.id}
+                href={isAvailable ? app.url : '#'}
+                target={isAvailable ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                onClick={e => !isAvailable && e.preventDefault()}
+                className={`relative rounded-xl p-4 border transition-all duration-200 ${
+                  isAvailable
+                    ? 'bg-white/8 border-white/15 hover:bg-white/15 hover:border-white/25 hover:scale-105 cursor-pointer'
+                    : 'bg-white/3 border-white/8 cursor-not-allowed opacity-50'
+                }`}
+              >
+                {app.comingSoon && (
+                  <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                    Bientôt
+                  </div>
+                )}
+                <div className="text-2xl mb-2">{app.icon}</div>
+                <h3 className="text-sm font-semibold text-white mb-0.5">{app.name}</h3>
+                <p className="text-xs text-gray-400">{app.description}</p>
+                {isAvailable && (
+                  <div className="mt-2 text-xs font-medium" style={{ color: brand.color }}>
+                    Ouvrir →
+                  </div>
+                )}
+              </a>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Dashboard({ user, token, onLogout }: { user: User; token: string; onLogout: () => void }) {
   const [showAdminPanel, setShowAdminPanel] = useState(false)
-  const userApps = user.role === 'ADMIN' ? APPS : APPS.filter(app => user.allowedApps?.includes(app.id))
+  const [openBrands, setOpenBrands] = useState<Set<string>>(new Set(BRANDS.map(b => b.id)))
+
+  const userAppIds = user.role === 'ADMIN' ? ALL_APPS.map(a => a.id) : (user.allowedApps || [])
+
+  const toggleBrand = (brandId: string) => {
+    setOpenBrands(prev => {
+      const next = new Set(prev)
+      next.has(brandId) ? next.delete(brandId) : next.add(brandId)
+      return next
+    })
+  }
 
   return (
     <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -254,23 +371,33 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
           <p className="text-gray-400">Bienvenue, {user.firstName} {user.lastName}</p>
         </div>
         <div className="flex gap-3">
-          {user.role === 'ADMIN' && <button onClick={() => setShowAdminPanel(true)} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all">👥 Gérer Utilisateurs</button>}
-          <button onClick={onLogout} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all">Déconnexion</button>
+          {user.role === 'ADMIN' && (
+            <button onClick={() => setShowAdminPanel(true)} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all">
+              👥 Gérer Utilisateurs
+            </button>
+          )}
+          <button onClick={onLogout} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all">
+            Déconnexion
+          </button>
         </div>
       </div>
-      {userApps.length === 0 && <div className="text-center py-12"><p className="text-gray-400 text-lg">Aucune application disponible.</p></div>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-        {userApps.map(app => (
-          <a key={app.id} href={app.comingSoon ? '#' : app.url} target={app.comingSoon ? '_self' : '_blank'} rel="noopener noreferrer" className={`group relative bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20 transition-all hover:scale-105 hover:bg-white/15 ${app.comingSoon ? 'cursor-not-allowed opacity-60' : ''}`} onClick={e => app.comingSoon && e.preventDefault()}>
-            {app.comingSoon && <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-full">Bientôt</div>}
-            <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-3xl" style={{ backgroundColor: app.color + '30' }}>{app.icon.startsWith('http') ? <img src={app.icon} alt={app.name} className="w-10 h-10 object-contain" /> : app.icon}</div>
-            <h3 className="text-lg font-semibold text-white mb-1">{app.name}</h3>
-            <p className="text-sm text-gray-400">{app.description}</p>
-            {!app.comingSoon && <div className="mt-4 flex items-center text-sm text-blue-400 group-hover:text-blue-300">Ouvrir →</div>}
-          </a>
+
+      <div className="space-y-4 max-w-6xl mx-auto">
+        {BRANDS.map(brand => (
+          <BrandCard
+            key={brand.id}
+            brand={brand}
+            userApps={userAppIds}
+            isOpen={openBrands.has(brand.id)}
+            onToggle={() => toggleBrand(brand.id)}
+          />
         ))}
       </div>
-      <div className="mt-12 text-center text-gray-500 text-sm"><p>Trivium Group © 2026</p></div>
+
+      <div className="mt-12 text-center text-gray-500 text-sm">
+        <p>Trivium Group © 2026</p>
+      </div>
+
       {showAdminPanel && <AdminPanel token={token} onClose={() => setShowAdminPanel(false)} />}
     </div>
   )
@@ -293,11 +420,14 @@ export default function App() {
     } else { setLoading(false) }
   }, [])
 
-  const handleLogout = () => { localStorage.removeItem('trivium_token'); localStorage.removeItem('trivium_user'); setUser(null); setToken(null) }
+  const handleLogout = () => {
+    localStorage.removeItem('trivium_token')
+    localStorage.removeItem('trivium_user')
+    setUser(null)
+    setToken(null)
+  }
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"><div className="text-white text-xl">Chargement...</div></div>
   if (!user || !token) return <Login onLogin={(u, t) => { setUser(u); setToken(t) }} />
   return <Dashboard user={user} token={token} onLogout={handleLogout} />
 }
-// Force rebuild Wed Jan 28 22:57:44 UTC 2026
-// Force rebuild Wed Jan 28 23:02:01 UTC 2026
