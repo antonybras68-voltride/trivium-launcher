@@ -51,7 +51,6 @@ const BRANDS: BrandGroup[] = [
   }
 ]
 
-// Flat list of all apps for admin panel
 const ALL_APPS = BRANDS.flatMap(b => b.apps)
 
 const ROLES = [
@@ -67,6 +66,10 @@ interface User {
   id: string; email: string; firstName: string; lastName: string
   role: string; brands: string[]; agencyIds: string[]
   allowedApps: string[]; language: string; isActive?: boolean
+}
+
+interface Agency {
+  id: string; name: string; brand: string; agencyType: string
 }
 
 function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
@@ -122,12 +125,18 @@ function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
 
 function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) {
   const [users, setUsers] = useState<User[]>([])
+  const [agencies, setAgencies] = useState<Agency[]>([])
   const [loading, setLoading] = useState(true)
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [formData, setFormData] = useState({ email: '', password: '', firstName: '', lastName: '', role: 'OPERATOR', brands: ['VOLTRIDE', 'MOTOR-RENT'], allowedApps: [] as string[], language: 'es', isActive: true })
+  const [formData, setFormData] = useState({ 
+    email: '', password: '', firstName: '', lastName: '', 
+    role: 'OPERATOR', brands: ['VOLTRIDE', 'MOTOR-RENT'], 
+    allowedApps: [] as string[], agencyIds: [] as string[], 
+    language: 'es', isActive: true 
+  })
 
   const fetchUsers = async () => {
     try {
@@ -138,7 +147,15 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     setLoading(false)
   }
 
-  useEffect(() => { fetchUsers() }, [])
+  const fetchAgencies = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/agencies`)
+      const data = await response.json()
+      setAgencies(data)
+    } catch (err) { console.error('Error fetching agencies') }
+  }
+
+  useEffect(() => { fetchUsers(); fetchAgencies() }, [])
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -183,13 +200,49 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     } catch (err) { setError('Erreur de connexion au serveur') }
   }
 
-  const resetForm = () => { setFormData({ email: '', password: '', firstName: '', lastName: '', role: 'OPERATOR', brands: ['VOLTRIDE', 'MOTOR-RENT'], allowedApps: [], language: 'es', isActive: true }) }
+  const resetForm = () => { 
+    setFormData({ 
+      email: '', password: '', firstName: '', lastName: '', 
+      role: 'OPERATOR', brands: ['VOLTRIDE', 'MOTOR-RENT'], 
+      allowedApps: [], agencyIds: [], language: 'es', isActive: true 
+    }) 
+  }
+
   const startEdit = (user: User) => {
     setEditingUser(user)
-    setFormData({ email: user.email, password: '', firstName: user.firstName, lastName: user.lastName, role: user.role, brands: user.brands || [], allowedApps: user.allowedApps || [], language: user.language || 'es', isActive: user.isActive ?? true })
+    setFormData({ 
+      email: user.email, password: '', firstName: user.firstName, lastName: user.lastName, 
+      role: user.role, brands: user.brands || [], allowedApps: user.allowedApps || [], 
+      agencyIds: user.agencyIds || [], language: user.language || 'es', isActive: user.isActive ?? true 
+    })
     setShowCreateForm(false)
   }
-  const toggleApp = (appId: string) => { setFormData(prev => ({ ...prev, allowedApps: prev.allowedApps.includes(appId) ? prev.allowedApps.filter(id => id !== appId) : [...prev.allowedApps, appId] })) }
+
+  const toggleApp = (appId: string) => { 
+    setFormData(prev => ({ 
+      ...prev, 
+      allowedApps: prev.allowedApps.includes(appId) 
+        ? prev.allowedApps.filter(id => id !== appId) 
+        : [...prev.allowedApps, appId] 
+    })) 
+  }
+
+  const toggleAgency = (agencyId: string) => { 
+    setFormData(prev => ({ 
+      ...prev, 
+      agencyIds: prev.agencyIds.includes(agencyId) 
+        ? prev.agencyIds.filter(id => id !== agencyId) 
+        : [...prev.agencyIds, agencyId] 
+    })) 
+  }
+
+  const getName = (name: any) => {
+    if (typeof name === 'string') {
+      try { const p = JSON.parse(name); return p.es || p.fr || p.en || name } 
+      catch { return name }
+    }
+    return name?.es || name?.fr || name?.en || 'Agence'
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -213,6 +266,23 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
                 <div><label className="block text-sm text-gray-400 mb-1">Rôle</label><select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white">{ROLES.map(role => <option key={role.value} value={role.value} className="bg-gray-800">{role.label}</option>)}</select></div>
                 <div><label className="block text-sm text-gray-400 mb-1">Langue</label><select value={formData.language} onChange={e => setFormData({ ...formData, language: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white"><option value="fr" className="bg-gray-800">Français</option><option value="es" className="bg-gray-800">Español</option><option value="en" className="bg-gray-800">English</option></select></div>
               </div>
+
+              {/* Sélection des agences - visible pour COLLABORATOR et FRANCHISEE */}
+              {(formData.role === 'COLLABORATOR' || formData.role === 'FRANCHISEE') && (
+                <div className="mb-4">
+                  <label className="block text-sm text-gray-400 mb-2">Agences autorisées</label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 bg-white/5 rounded-lg">
+                    {agencies.map(agency => (
+                      <label key={agency.id} className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all ${formData.agencyIds.includes(agency.id) ? 'bg-green-500/20 border border-green-500/50' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}>
+                        <input type="checkbox" checked={formData.agencyIds.includes(agency.id)} onChange={() => toggleAgency(agency.id)} className="rounded" />
+                        <span className="text-sm text-white">{getName(agency.name)}</span>
+                        <span className="text-xs text-gray-500">({agency.brand})</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="mb-4">
                 <label className="block text-sm text-gray-400 mb-2">Applications autorisées</label>
                 <div className="space-y-3">
@@ -231,6 +301,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
                   ))}
                 </div>
               </div>
+
               <div className="mb-4"><label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked={formData.isActive} onChange={e => setFormData({ ...formData, isActive: e.target.checked })} className="rounded" /><span className="text-white">Utilisateur actif</span></label></div>
               <div className="flex gap-3">
                 <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all">{editingUser ? 'Enregistrer' : 'Créer'}</button>
@@ -244,14 +315,15 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
           {loading ? <div className="text-center text-gray-400 py-8">Chargement...</div> : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead><tr className="text-left text-gray-400 border-b border-white/10"><th className="pb-3">Utilisateur</th><th className="pb-3">Email</th><th className="pb-3">Rôle</th><th className="pb-3">Apps</th><th className="pb-3">Statut</th><th className="pb-3">Actions</th></tr></thead>
+                <thead><tr className="text-left text-gray-400 border-b border-white/10"><th className="pb-3">Utilisateur</th><th className="pb-3">Email</th><th className="pb-3">Rôle</th><th className="pb-3">Apps</th><th className="pb-3">Agences</th><th className="pb-3">Statut</th><th className="pb-3">Actions</th></tr></thead>
                 <tbody>
                   {users.map(user => (
                     <tr key={user.id} className="border-b border-white/5 hover:bg-white/5">
                       <td className="py-3 text-white">{user.firstName} {user.lastName}</td>
                       <td className="py-3 text-gray-300">{user.email}</td>
-                      <td className="py-3"><span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-purple-500/20 text-purple-300' : 'bg-gray-500/20 text-gray-300'}`}>{user.role}</span></td>
-                      <td className="py-3 text-gray-300">{user.allowedApps?.length || 0} app(s)</td>
+                      <td className="py-3"><span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-purple-500/20 text-purple-300' : user.role === 'FRANCHISEE' ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-300'}`}>{user.role}</span></td>
+                      <td className="py-3 text-gray-300">{user.allowedApps?.length || 0}</td>
+                      <td className="py-3 text-gray-300">{user.agencyIds?.length || 'Toutes'}</td>
                       <td className="py-3"><span className={`px-2 py-1 rounded text-xs ${user.isActive ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>{user.isActive ? 'Actif' : 'Inactif'}</span></td>
                       <td className="py-3 space-x-2">
                         <button onClick={() => startEdit(user)} className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-all">✏️</button>
