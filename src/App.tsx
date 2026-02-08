@@ -14,39 +14,39 @@ type BrandGroup = {
 
 const BRANDS: BrandGroup[] = [
   {
-    id: 'voltride', name: 'VOLTRIDE', tagline: 'Location de vélos électriques',
+    id: 'voltride', name: 'VOLTRIDE', tagline: 'Alquiler de bicicletas eléctricas',
     logo: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769278425/IMG-20260111-WA0001_1_-removebg-preview_zzajxa.png',
     color: '#abdee6', gradient: 'from-cyan-600 to-blue-700',
     apps: [
-      { id: 'voltride-opp', name: 'Operator', description: 'Gestion des locations', url: 'https://operator-production-188c.up.railway.app', icon: '📱' },
-      { id: 'backoffice-voltride', name: 'Back Office', description: 'Administration', url: 'https://backoffice-voltride-production.up.railway.app', icon: '🖥️' },
-      { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturation & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
-      { id: 'mecanique-voltride', name: 'Mécanique', description: 'Gestion des réparations', url: '#', icon: '🔧', comingSoon: true },
-      { id: 'stock-voltride', name: 'Stock', description: 'Gestion des inventaires', url: '#', icon: '📦', comingSoon: true }
+      { id: 'voltride-opp', name: 'Operator', description: 'Gestión de alquileres', url: 'https://operator-production-188c.up.railway.app', icon: '📱' },
+      { id: 'backoffice-voltride', name: 'Back Office', description: 'Administración', url: 'https://backoffice-voltride-production.up.railway.app', icon: '🖥️' },
+      { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturación & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
+      { id: 'mecanique-voltride', name: 'Mécanique', description: 'Gestión de reparaciones', url: '#', icon: '🔧', comingSoon: true },
+      { id: 'stock-voltride', name: 'Stock', description: 'Gestión de inventarios', url: '#', icon: '📦', comingSoon: true }
     ]
   },
   {
-    id: 'motorrent', name: 'MOTOR RENT', tagline: 'Location de scooters et motos',
+    id: 'motorrent', name: 'MOTOR RENT', tagline: 'Alquiler de scooters y motos',
     logo: 'https://res.cloudinary.com/dis5pcnfr/image/upload/v1769277533/Design_sans_titre_ca0tl1.png',
     color: '#ffaf10', gradient: 'from-amber-500 to-orange-600',
     apps: [
-      { id: 'motorrent-opp', name: 'Operator', description: 'Gestion des locations', url: 'https://motor-rent-operator-production.up.railway.app', icon: '📱' },
-      { id: 'backoffice-motorrent', name: 'Back Office', description: 'Administration', url: 'https://backoffice-vandm-production.up.railway.app', icon: '🖥️' },
-      { id: 'comptabilite-motorrent', name: 'Comptabilité', description: 'Facturation & IVA', url: '#', icon: '💰', comingSoon: true },
-      { id: 'mecanique-motorrent', name: 'Mécanique', description: 'Gestion des réparations', url: '#', icon: '🔧', comingSoon: true },
-      { id: 'stock-motorrent', name: 'Stock', description: 'Gestion des inventaires', url: '#', icon: '📦', comingSoon: true }
+      { id: 'motorrent-opp', name: 'Operator', description: 'Gestión de alquileres', url: 'https://motor-rent-operator-production.up.railway.app', icon: '📱' },
+      { id: 'backoffice-motorrent', name: 'Back Office', description: 'Administración', url: 'https://backoffice-vandm-production.up.railway.app', icon: '🖥️' },
+      { id: 'comptabilite-motorrent', name: 'Comptabilité', description: 'Facturación & IVA', url: '#', icon: '💰', comingSoon: true },
+      { id: 'mecanique-motorrent', name: 'Mécanique', description: 'Gestión de reparaciones', url: '#', icon: '🔧', comingSoon: true },
+      { id: 'stock-motorrent', name: 'Stock', description: 'Gestión de inventarios', url: '#', icon: '📦', comingSoon: true }
     ]
   },
   {
-    id: 'trivium', name: 'TRIVIUM', tagline: 'Tours en buggy & mobilité',
+    id: 'trivium', name: 'TRIVIUM', tagline: 'Tours en buggy & movilidad',
     logo: '',
     color: '#10b981', gradient: 'from-emerald-500 to-teal-600',
     apps: [
-      { id: 'trivium-buggy', name: 'Buggy', description: 'Gestion des tours en buggy', url: 'https://trivium-buggy-production.up.railway.app', icon: '🏎️' },
+      { id: 'trivium-buggy', name: 'Buggy', description: 'Gestión de tours en buggy', url: 'https://trivium-buggy-production.up.railway.app', icon: '🏎️' },
       { id: 'trivium-mobility', name: 'Mobility', description: 'Gestion de mobilité', url: '#', icon: '🦽', comingSoon: true },
-      { id: 'comptabilite-trivium', name: 'Comptabilité', description: 'Facturation & IVA', url: '#', icon: '💰', comingSoon: true },
-      { id: 'mecanique-trivium', name: 'Mécanique', description: 'Gestion des réparations', url: '#', icon: '🔧', comingSoon: true },
-      { id: 'stock-trivium', name: 'Stock', description: 'Gestion des inventaires', url: '#', icon: '📦', comingSoon: true }
+      { id: 'comptabilite-trivium', name: 'Comptabilité', description: 'Facturación & IVA', url: '#', icon: '💰', comingSoon: true },
+      { id: 'mecanique-trivium', name: 'Mécanique', description: 'Gestión de reparaciones', url: '#', icon: '🔧', comingSoon: true },
+      { id: 'stock-trivium', name: 'Stock', description: 'Gestión de inventarios', url: '#', icon: '📦', comingSoon: true }
     ]
   }
 ]
@@ -248,7 +248,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-gray-900 rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden border border-white/20">
         <div className="flex justify-between items-center p-6 border-b border-white/10">
-          <h2 className="text-2xl font-bold text-white">👥 Gestion des Utilisateurs</h2>
+          <h2 className="text-2xl font-bold text-white">👥 Gestión de Usuarios</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-white text-2xl">✕</button>
         </div>
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
@@ -411,7 +411,7 @@ function BrandCard({ brand, userApps, isAdmin, isOpen, onToggle, user }: { brand
               >
                 {app.comingSoon && (
                   <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded-full">
-                    Bientôt
+                    Próximamente
                   </div>
                 )}
                 <div className="text-2xl mb-2">{app.icon}</div>
@@ -419,7 +419,7 @@ function BrandCard({ brand, userApps, isAdmin, isOpen, onToggle, user }: { brand
                 <p className="text-xs text-gray-400">{app.description}</p>
                 {isAvailable && (
                   <div className="mt-2 text-xs font-medium" style={{ color: brand.color }}>
-                    Ouvrir →
+                    Abrir →
                   </div>
                 )}
               </a>
@@ -450,7 +450,7 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-white">🚀 Trivium Launcher</h1>
-          <p className="text-gray-400">Bienvenue, {user.firstName} {user.lastName}</p>
+          <p className="text-gray-400">Bienvenido, {user.firstName} {user.lastName}</p>
         </div>
         <div className="flex gap-3">
           {user.role === 'ADMIN' && (
@@ -459,7 +459,7 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
             </button>
           )}
           <button onClick={onLogout} className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all">
-            Déconnexion
+            Cerrar sesión
           </button>
         </div>
       </div>
