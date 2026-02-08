@@ -341,10 +341,14 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
   )
 }
 
-function BrandCard({ brand, userApps, isOpen, onToggle }: { brand: BrandGroup; userApps: string[]; isOpen: boolean; onToggle: () => void }) {
-  const availableApps = brand.apps.filter(app => userApps.includes(app.id) || app.comingSoon)
-  const activeCount = brand.apps.filter(app => userApps.includes(app.id) && !app.comingSoon).length
+function BrandCard({ brand, userApps, isAdmin, isOpen, onToggle, user }: { brand: BrandGroup; userApps: string[]; isAdmin: boolean; isOpen: boolean; onToggle: () => void; user: User }) {
+  // ADMIN voit tout, les autres ne voient que leurs apps autorisées (jamais les comingSoon)
+  const availableApps = isAdmin
+    ? brand.apps
+    : brand.apps.filter(app => userApps.includes(app.id) && !app.comingSoon)
+  const activeCount = availableApps.filter(app => !app.comingSoon).length
 
+  // Cacher la marque entière si aucune app disponible
   if (availableApps.length === 0) return null
 
   return (
@@ -385,11 +389,17 @@ function BrandCard({ brand, userApps, isOpen, onToggle }: { brand: BrandGroup; u
       <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500px] opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 pl-4">
           {availableApps.map(app => {
-            const isAvailable = userApps.includes(app.id) && !app.comingSoon
+            const isAvailable = !app.comingSoon && (isAdmin || userApps.includes(app.id))
+            // Pour les COLLABORATOR/FRANCHISEE, on ajoute les agencyIds dans l'URL
+            let appUrl = app.url
+            if (isAvailable && user.agencyIds && user.agencyIds.length > 0) {
+              const separator = app.url.includes('?') ? '&' : '?'
+              appUrl = `${app.url}${separator}agencyIds=${user.agencyIds.join(',')}`
+            }
             return (
               <a
                 key={app.id}
-                href={isAvailable ? app.url : '#'}
+                href={isAvailable ? appUrl : '#'}
                 target={isAvailable ? '_blank' : '_self'}
                 rel="noopener noreferrer"
                 onClick={e => !isAvailable && e.preventDefault()}
@@ -460,8 +470,10 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
             key={brand.id}
             brand={brand}
             userApps={userAppIds}
+            isAdmin={user.role === 'ADMIN'}
             isOpen={openBrands.has(brand.id)}
             onToggle={() => toggleBrand(brand.id)}
+            user={user}
           />
         ))}
       </div>
