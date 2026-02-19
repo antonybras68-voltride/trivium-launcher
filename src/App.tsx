@@ -15,7 +15,7 @@ const BRANDS: BrandGroup[] = [
     color: '#abdee6', gradient: 'from-cyan-600 to-blue-700',
     apps: [
       { id: 'voltride-opp', name: 'Operator', description: 'Gestión de alquileres', url: 'https://operator-production-188c.up.railway.app', icon: '📱' },
-      { id: 'backoffice-voltride', name: 'Back Office', description: 'Administración', url: 'https://backoffice-voltride-production.up.railway.app', icon: '🖥️' },
+      { id: 'backoffice-voltride', name: 'Back Office', description: 'Administración', url: 'https://backoffice-voltride-production-a51e.up.railway.app', icon: '🖥️' },
       { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturación & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
       { id: "maintenance-voltride", name: "Maintenance", description: "Flota, stock y docs técnicos", url: "https://compassionate-dream-production.up.railway.app", icon: "🔧" }
     ]
