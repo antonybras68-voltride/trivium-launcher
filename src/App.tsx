@@ -1,17 +1,13 @@
 import { useState, useEffect } from 'react'
-
 const API_URL = 'https://api-voltrideandmotorrent-production.up.railway.app'
-
 type AppItem = {
   id: string; name: string; description: string; url: string
   icon: string; comingSoon?: boolean
 }
-
 type BrandGroup = {
   id: string; name: string; tagline: string; logo: string
   color: string; gradient: string; apps: AppItem[]
 }
-
 const BRANDS: BrandGroup[] = [
   {
     id: 'voltride', name: 'VOLTRIDE', tagline: 'Alquiler de bicicletas eléctricas',
@@ -21,8 +17,7 @@ const BRANDS: BrandGroup[] = [
       { id: 'voltride-opp', name: 'Operator', description: 'Gestión de alquileres', url: 'https://operator-production-188c.up.railway.app', icon: '📱' },
       { id: 'backoffice-voltride', name: 'Back Office', description: 'Administración', url: 'https://backoffice-voltride-production.up.railway.app', icon: '🖥️' },
       { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturación & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
-      { id: 'mecanique-voltride', name: 'Mécanique', description: 'Gestión de reparaciones', url: '#', icon: '🔧', comingSoon: true },
-      { id: 'stock-voltride', name: 'Stock', description: 'Gestión de inventarios', url: '#', icon: '📦', comingSoon: true }
+      { id: "maintenance-voltride", name: "Maintenance", description: "Flota, stock y docs técnicos", url: "https://compassionate-dream-production.up.railway.app", icon: "🔧" }
     ]
   },
   {
@@ -50,9 +45,7 @@ const BRANDS: BrandGroup[] = [
     ]
   }
 ]
-
 const ALL_APPS = BRANDS.flatMap(b => b.apps)
-
 const ROLES = [
   { value: 'ADMIN', label: 'Admin' },
   { value: 'MANAGER', label: 'Manager' },
@@ -61,23 +54,19 @@ const ROLES = [
   { value: 'COLLABORATOR', label: 'Collaborateur' },
   { value: 'FRANCHISEE', label: 'Franchisé' }
 ]
-
 interface User {
   id: string; email: string; firstName: string; lastName: string
   role: string; brands: string[]; agencyIds: string[]
   allowedApps: string[]; language: string; isActive?: boolean
 }
-
 interface Agency {
   id: string; name: string; brand: string; agencyType: string
 }
-
 function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -96,7 +85,6 @@ function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
     } catch (err) { setError('Erreur de connexion au serveur') }
     setLoading(false)
   }
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md border border-white/20">
@@ -122,7 +110,6 @@ function Login({ onLogin }: { onLogin: (user: User, token: string) => void }) {
     </div>
   )
 }
-
 function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) {
   const [users, setUsers] = useState<User[]>([])
   const [agencies, setAgencies] = useState<Agency[]>([])
@@ -137,7 +124,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     allowedApps: [] as string[], agencyIds: [] as string[], 
     language: 'es', isActive: true 
   })
-
   const fetchUsers = async () => {
     try {
       const response = await fetch(`${API_URL}/api/users`, { headers: { 'Authorization': `Bearer ${token}` } })
@@ -146,7 +132,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     } catch (err) { setError('Erreur lors du chargement des utilisateurs') }
     setLoading(false)
   }
-
   const fetchAgencies = async () => {
     try {
       const response = await fetch(`${API_URL}/api/agencies`)
@@ -154,9 +139,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       setAgencies(data)
     } catch (err) { console.error('Error fetching agencies') }
   }
-
   useEffect(() => { fetchUsers(); fetchAgencies() }, [])
-
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(''); setSuccess('')
@@ -171,7 +154,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       setShowCreateForm(false); resetForm(); fetchUsers()
     } catch (err) { setError('Erreur de connexion au serveur') }
   }
-
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!editingUser) return
@@ -189,7 +171,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       setEditingUser(null); resetForm(); fetchUsers()
     } catch (err) { setError('Erreur de connexion au serveur') }
   }
-
   const handleDelete = async (userId: string) => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) return
     try {
@@ -199,7 +180,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       fetchUsers()
     } catch (err) { setError('Erreur de connexion au serveur') }
   }
-
   const resetForm = () => { 
     setFormData({ 
       email: '', password: '', firstName: '', lastName: '', 
@@ -207,7 +187,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
       allowedApps: [], agencyIds: [], language: 'es', isActive: true 
     }) 
   }
-
   const startEdit = (user: User) => {
     setEditingUser(user)
     setFormData({ 
@@ -217,7 +196,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     })
     setShowCreateForm(false)
   }
-
   const toggleApp = (appId: string) => { 
     setFormData(prev => ({ 
       ...prev, 
@@ -226,7 +204,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
         : [...prev.allowedApps, appId] 
     })) 
   }
-
   const toggleAgency = (agencyId: string) => { 
     setFormData(prev => ({ 
       ...prev, 
@@ -235,7 +212,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
         : [...prev.agencyIds, agencyId] 
     })) 
   }
-
   const getName = (name: any) => {
     if (typeof name === 'string') {
       try { const p = JSON.parse(name); return p.es || p.fr || p.en || name } 
@@ -243,7 +219,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     }
     return name?.es || name?.fr || name?.en || 'Agence'
   }
-
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-gray-900 rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden border border-white/20">
@@ -254,7 +229,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
           {error && <div className="mb-4 bg-red-500/20 border border-red-500/50 rounded-lg p-3 text-red-200">{error}</div>}
           {success && <div className="mb-4 bg-green-500/20 border border-green-500/50 rounded-lg p-3 text-green-200">{success}</div>}
-
           {(showCreateForm || editingUser) && (
             <form onSubmit={editingUser ? handleUpdate : handleCreate} className="mb-8 bg-white/5 rounded-xl p-6 border border-white/10">
               <h3 className="text-lg font-semibold text-white mb-4">{editingUser ? `Modifier: ${editingUser.firstName} ${editingUser.lastName}` : 'Nouvel Utilisateur'}</h3>
@@ -266,7 +240,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
                 <div><label className="block text-sm text-gray-400 mb-1">Rôle</label><select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white">{ROLES.map(role => <option key={role.value} value={role.value} className="bg-gray-800">{role.label}</option>)}</select></div>
                 <div><label className="block text-sm text-gray-400 mb-1">Langue</label><select value={formData.language} onChange={e => setFormData({ ...formData, language: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white"><option value="fr" className="bg-gray-800">Français</option><option value="es" className="bg-gray-800">Español</option><option value="en" className="bg-gray-800">English</option></select></div>
               </div>
-
               {/* Sélection des agences - visible pour COLLABORATOR et FRANCHISEE */}
               {(formData.role === 'COLLABORATOR' || formData.role === 'FRANCHISEE') && (
                 <div className="mb-4">
@@ -282,7 +255,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
                   </div>
                 </div>
               )}
-
               <div className="mb-4">
                 <label className="block text-sm text-gray-400 mb-2">Applications autorisées</label>
                 <div className="space-y-3">
@@ -301,7 +273,6 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
                   ))}
                 </div>
               </div>
-
               <div className="mb-4"><label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked={formData.isActive} onChange={e => setFormData({ ...formData, isActive: e.target.checked })} className="rounded" /><span className="text-white">Utilisateur actif</span></label></div>
               <div className="flex gap-3">
                 <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all">{editingUser ? 'Enregistrer' : 'Créer'}</button>
@@ -309,9 +280,7 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
               </div>
             </form>
           )}
-
           {!showCreateForm && !editingUser && <button onClick={() => { setShowCreateForm(true); resetForm() }} className="mb-6 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all">➕ Nouvel Utilisateur</button>}
-
           {loading ? <div className="text-center text-gray-400 py-8">Chargement...</div> : (
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -340,17 +309,14 @@ function AdminPanel({ token, onClose }: { token: string; onClose: () => void }) 
     </div>
   )
 }
-
 function BrandCard({ brand, userApps, isAdmin, isOpen, onToggle, user }: { brand: BrandGroup; userApps: string[]; isAdmin: boolean; isOpen: boolean; onToggle: () => void; user: User }) {
   // ADMIN voit tout, les autres ne voient que leurs apps autorisées (jamais les comingSoon)
   const availableApps = isAdmin
     ? brand.apps
     : brand.apps.filter(app => userApps.includes(app.id) && !app.comingSoon)
   const activeCount = availableApps.filter(app => !app.comingSoon).length
-
   // Cacher la marque entière si aucune app disponible
   if (availableApps.length === 0) return null
-
   return (
     <div className="w-full">
       <button
@@ -385,16 +351,18 @@ function BrandCard({ brand, userApps, isAdmin, isOpen, onToggle, user }: { brand
           </div>
         </div>
       </button>
-
       <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-[500px] opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 pl-4">
           {availableApps.map(app => {
             const isAvailable = !app.comingSoon && (isAdmin || userApps.includes(app.id))
-            // Pour les COLLABORATOR/FRANCHISEE, on ajoute les agencyIds dans l'URL
+            // Envoyer token + agencyIds à toutes les apps
+            const launcherToken = localStorage.getItem('trivium_token')
             let appUrl = app.url
-            if (isAvailable && user.agencyIds && user.agencyIds.length > 0) {
-              const separator = app.url.includes('?') ? '&' : '?'
-              appUrl = `${app.url}${separator}agencyIds=${user.agencyIds.join(',')}`
+            if (isAvailable) {
+              const params = new URLSearchParams()
+              if (launcherToken) params.set('token', launcherToken)
+              if (user.agencyIds && user.agencyIds.length > 0) params.set('agencyIds', user.agencyIds.join(','))
+              if (params.toString()) appUrl = `${app.url}?${params.toString()}`
             }
             return (
               <a
@@ -430,13 +398,10 @@ function BrandCard({ brand, userApps, isAdmin, isOpen, onToggle, user }: { brand
     </div>
   )
 }
-
 function Dashboard({ user, token, onLogout }: { user: User; token: string; onLogout: () => void }) {
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [openBrands, setOpenBrands] = useState<Set<string>>(new Set(BRANDS.map(b => b.id)))
-
   const userAppIds = user.role === 'ADMIN' ? ALL_APPS.map(a => a.id) : (user.allowedApps || [])
-
   const toggleBrand = (brandId: string) => {
     setOpenBrands(prev => {
       const next = new Set(prev)
@@ -444,7 +409,6 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
       return next
     })
   }
-
   return (
     <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="flex justify-between items-center mb-8">
@@ -463,7 +427,6 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
           </button>
         </div>
       </div>
-
       <div className="space-y-4 max-w-6xl mx-auto">
         {BRANDS.map(brand => (
           <BrandCard
@@ -477,21 +440,17 @@ function Dashboard({ user, token, onLogout }: { user: User; token: string; onLog
           />
         ))}
       </div>
-
       <div className="mt-12 text-center text-gray-500 text-sm">
         <p>Trivium Group © 2026</p>
       </div>
-
       {showAdminPanel && <AdminPanel token={token} onClose={() => setShowAdminPanel(false)} />}
     </div>
   )
 }
-
 export default function App() {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-
   useEffect(() => {
     const savedToken = localStorage.getItem('trivium_token')
     const savedUser = localStorage.getItem('trivium_user')
@@ -503,14 +462,12 @@ export default function App() {
         .finally(() => setLoading(false))
     } else { setLoading(false) }
   }, [])
-
   const handleLogout = () => {
     localStorage.removeItem('trivium_token')
     localStorage.removeItem('trivium_user')
     setUser(null)
     setToken(null)
   }
-
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"><div className="text-white text-xl">Chargement...</div></div>
   if (!user || !token) return <Login onLogin={(u, t) => { setUser(u); setToken(t) }} />
   return <Dashboard user={user} token={token} onLogout={handleLogout} />
