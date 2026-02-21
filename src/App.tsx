@@ -18,7 +18,7 @@ const BRANDS: BrandGroup[] = [
       { id: 'backoffice-voltride', name: 'Back Office', description: 'Administración', url: 'https://backoffice-voltride-production-a51e.up.railway.app', icon: '🖥️' },
       { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturación & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
       { id: "maintenance-voltride", name: "Maintenance", description: "Flota, stock y docs técnicos", url: "https://compassionate-dream-production.up.railway.app", icon: "🔧" },
-      { id: 'docs-voltride', name: 'Documentos alquiler', description: 'Archivo de contratos y fotos', url: '#', icon: '📁', comingSoon: true }
+      { id: 'docs-voltride', name: 'Documentos alquiler', description: 'Archivo de contratos y fotos', url: 'https://documentos-voltride-production.up.railway.app', icon: '📁' }
     ]
   },
   {
