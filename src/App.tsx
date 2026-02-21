@@ -17,7 +17,8 @@ const BRANDS: BrandGroup[] = [
       { id: 'voltride-opp', name: 'Operator', description: 'Gestión de alquileres', url: 'https://operator-production-188c.up.railway.app', icon: '📱' },
       { id: 'backoffice-voltride', name: 'Back Office', description: 'Administración', url: 'https://backoffice-voltride-production-a51e.up.railway.app', icon: '🖥️' },
       { id: 'comptabilite-voltride', name: 'Comptabilité', description: 'Facturación & IVA', url: 'https://voltride-comptabilite-production.up.railway.app', icon: '💰' },
-      { id: "maintenance-voltride", name: "Maintenance", description: "Flota, stock y docs técnicos", url: "https://compassionate-dream-production.up.railway.app", icon: "🔧" }
+      { id: "maintenance-voltride", name: "Maintenance", description: "Flota, stock y docs técnicos", url: "https://compassionate-dream-production.up.railway.app", icon: "🔧" },
+      { id: 'docs-voltride', name: 'Documentos alquiler', description: 'Archivo de contratos y fotos', url: '#', icon: '📁', comingSoon: true }
     ]
   },
   {
@@ -29,7 +30,7 @@ const BRANDS: BrandGroup[] = [
       { id: 'backoffice-motorrent', name: 'Back Office', description: 'Administración', url: 'https://backoffice-vandm-production.up.railway.app', icon: '🖥️' },
       { id: 'comptabilite-motorrent', name: 'Comptabilité', description: 'Facturación & IVA', url: '#', icon: '💰', comingSoon: true },
       { id: 'mecanique-motorrent', name: 'Mécanique', description: 'Gestión de reparaciones', url: '#', icon: '🔧', comingSoon: true },
-      { id: 'stock-motorrent', name: 'Stock', description: 'Gestión de inventarios', url: '#', icon: '📦', comingSoon: true }
+      { id: 'docs-motorrent', name: 'Documentos alquiler', description: 'Archivo de contratos y fotos', url: '#', icon: '📁', comingSoon: true },
     ]
   },
   {
@@ -41,7 +42,9 @@ const BRANDS: BrandGroup[] = [
       { id: 'trivium-mobility', name: 'Mobility', description: 'Gestion de mobilité', url: '#', icon: '🦽', comingSoon: true },
       { id: 'comptabilite-trivium', name: 'Comptabilité', description: 'Facturación & IVA', url: '#', icon: '💰', comingSoon: true },
       { id: 'mecanique-trivium', name: 'Mécanique', description: 'Gestión de reparaciones', url: '#', icon: '🔧', comingSoon: true },
-      { id: 'stock-trivium', name: 'Stock', description: 'Gestión de inventarios', url: '#', icon: '📦', comingSoon: true }
+      { id: 'docs-trivium', name: 'Documentos alquiler', description: 'Archivo de contratos y fotos', url: '#', icon: '📁', comingSoon: true },
+      { id: 'cafeteria-trivium', name: 'Cafetería', description: 'Gestión de caja y terraza', url: '#', icon: '☕', comingSoon: true },
+      { id: 'parking-trivium', name: 'Aparcamiento Motos', description: 'Control de plazas', url: '#', icon: '🏍️', comingSoon: true },
     ]
   }
 ]
